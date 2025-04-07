@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>The Big Slice – Catering Quote Calculator</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+
+    body {
+      font-family: 'Nunito', sans-serif;
+      background-color: #fff4ec;
+      padding: 2rem;
+      max-width: 800px;
+      margin: auto;
+      color: #333;
+    }
+
+    .logo {
+      display: block;
+      margin: 0 auto 1rem;
+      max-width: 200px;
+    }
+
+    h1 {
+      color: #d62828;
+      text-align: center;
+    }
+
+    h2 {
+      color: #333;
+      margin-top: 1rem;
+    }
+
+    section {
+      background: #fff;
+      padding: 1rem 1.5rem;
+      margin-top: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 1rem;
+      display: block;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    input[type='checkbox'] {
+      width: auto;
+    }
+
+    .total {
+      font-size: 1.7rem;
+      margin-top: 2rem;
+      background-color: #ffd7ba;
+      color: #000;
+      padding: 1rem;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <img src="the_big_slice_logo.jpeg" alt="The Big Slice Logo" class="logo" />
+  <h1>The Big Slice 🍕</h1>
+  <h2>Quote Calculator</h2>
+
+  <section>
+    <label for="guests">Number of Guests:</label>
+    <input type="number" id="guests" value="50" />
+  </section>
+
+  <section>
+    <label for="package">Select a Package:</label>
+    <select id="package">
+      <option value="30">Classic Party – $30 pp</option>
+      <option value="35">Corporate Crowd – $35 pp</option>
+      <option value="45">Premium Function – $45 pp</option>
+    </select>
+  </section>
+
+  <section>
+    <label>Extras (per person):</label>
+    <input type="checkbox" class="extra" value="5" /> Garlic Bread ($5)<br />
+    <input type="checkbox" class="extra" value="7.5" /> Arancini ($7.50)<br />
+    <input type="checkbox" class="extra" value="7.5" /> Loaded Chips ($7.50)<br />
+    <input type="checkbox" class="extra" value="4" /> Cannoli ($4)<br />
+    <input type="checkbox" class="extra" value="7.5" /> Dessert Pizza ($7.50)<br />
+  </section>
+
+  <section>
+    <label><input type="checkbox" id="gst" /> Include 10% GST</label>
+  </section>
+
+  
+  <button onclick="calculateTotal()" style="margin-top: 2rem; padding: 1rem 2rem; font-size: 1rem; background-color: #d62828; color: white; border: none; border-radius: 5px; cursor: pointer;">View Quote</button>
+  <div class="total" id="totalCost" style="display: none;">
+    Total: $0.00
+  </div>
+    
+
+  <script>
+    const guestsInput = document.getElementById('guests');
+    const packageSelect = document.getElementById('package');
+    const extras = document.querySelectorAll('.extra');
+    const gstCheckbox = document.getElementById('gst');
+    const totalDisplay = document.getElementById('totalCost');
+
+    function calculateTotal() {
+      const guests = parseInt(guestsInput.value);
+      const basePrice = parseFloat(packageSelect.value);
+      let extraPerPerson = 0;
+      extras.forEach(e => {
+        if (e.checked) extraPerPerson += parseFloat(e.value);
+      });
+
+      let total = guests * (basePrice + extraPerPerson);
+      if (gstCheckbox.checked) {
+        total *= 1.10;
+      }
+
+      
+      totalDisplay.textContent = 'Total: $' + total.toFixed(2);
+      totalDisplay.style.display = 'block';
+    
+    }
+
+    guestsInput.addEventListener('input', calculateTotal);
+    packageSelect.addEventListener('change', calculateTotal);
+    extras.forEach(e => e.addEventListener('change', calculateTotal));
+    gstCheckbox.addEventListener('change', calculateTotal);
+
+  </script>
+</body>
+</html>
